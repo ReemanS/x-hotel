@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Merriweather, Poppins } from "next/font/google";
 import "./globals.css";
+import { Providers } from "./providers";
+import Navbar from "./Navbar";
 
 export const merriweather = Merriweather({
   weight: ["300", "400", "700", "900"],
@@ -27,7 +29,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <Providers>
+          <Navbar />
+          {children}
+        </Providers>
+      </body>
     </html>
   );
 }

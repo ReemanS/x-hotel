@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 html {
-  @apply p-2 text-text text-lg bg-background;
+  @apply text-text text-lg bg-background;
 }
 
 h1 {
