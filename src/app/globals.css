@@ -7,5 +7,5 @@ html {
 }
 
 h1 {
-  @apply text-primary font-bold text-5xl;
+  @apply font-bold text-3xl;
 }

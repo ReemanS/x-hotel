@@ -1,6 +1,6 @@
-import Image from "next/image";
 import { merriweather, poppins } from "./layout";
-import Carousel from "./Carousel";
+import Carousel from "./components/Carousel";
+import CenterActions from "./components/CenterActions";
 
 export default function Home() {
   const images: string[] = [
@@ -11,9 +11,11 @@ export default function Home() {
   ];
 
   return (
-    <div>
+    <div className="relative">
       <div className={poppins.className}>
         <Carousel images={images} />
+        <CenterActions font={merriweather.className} />
+
         <div className="font-normal">
           Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloribus
           alias, veritatis quibusdam modi, consequatur fuga illum officia
