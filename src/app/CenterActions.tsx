@@ -3,10 +3,10 @@ import React from "react";
 import { Center, useMediaQuery } from "@chakra-ui/react";
 import { AiOutlineArrowRight } from "react-icons/ai";
 import { HiOutlineExternalLink } from "react-icons/hi";
-import { motion, AnimatePresence, Variants } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 import Link from "next/link";
 
-function CenterActions({ font }: { font: string }) {
+function CenterActions({ font, route }: { font: string; route: string }) {
   const [isDesktop] = useMediaQuery("(min-width: 768px)");
   const buttonVariants: Variants = {
     hover: {
@@ -21,19 +21,22 @@ function CenterActions({ font }: { font: string }) {
         <div className="text-background text-2xl md:text-6xl lg:text-8xl pb-2 md:pb-5 drop-shadow-md">
           Comfort awaits
         </div>
-        <motion.button
-          className="group flex items-center bg-primary p-3 md:p-5 text-background shadow-lg md:shadow-xl shadow-gray-600/50 rounded-lg"
-          variants={buttonVariants}
-          whileHover="hover"
-          whileTap={{ scale: 0.95 }}
-        >
-          <div className="pr-2 md:pr-4 text-xl md:text-4xl">
-            <span className={font}>Book now</span>
-          </div>
-          <div className="group-hover:-rotate-45 duration-200">
-            <AiOutlineArrowRight size={isDesktop ? 32 : 24} />
-          </div>
-        </motion.button>
+        <Link href={route}>
+          <motion.button
+            className="group flex items-center bg-primary p-3 md:p-5 text-background shadow-lg md:shadow-xl shadow-gray-600/50 rounded-lg"
+            variants={buttonVariants}
+            whileHover="hover"
+            whileTap={{ scale: 0.95 }}
+          >
+            <div className="pr-2 md:pr-4 text-xl md:text-4xl">
+              <span className={font}>Book now</span>
+            </div>
+            <div className="group-hover:-rotate-45 duration-200">
+              <AiOutlineArrowRight size={isDesktop ? 32 : 24} />
+            </div>
+          </motion.button>
+        </Link>
+
         <div className="flex pt-1 text-background">
           <span>or&#160;</span>
           <Link
