@@ -1,6 +1,7 @@
 import { merriweather, poppins } from "./layout";
 import Carousel from "./components/Carousel";
 import CenterActions from "./components/CenterActions";
+import ButtonTest from "./components/ButtonTest";
 
 export default function Home() {
   const images: string[] = [
@@ -22,6 +23,7 @@ export default function Home() {
           pariatur eum doloremque at delectus quas? Ab error dignissimos
           assumenda accusamus? Ad, velit!
         </div>
+        <ButtonTest />
       </div>
     </div>
   );
