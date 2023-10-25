@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
-import { initializeApp, getApps } from "firebase/app";
-import { getDatabase, ref, set } from "firebase/database";
+import { initializeApp } from "firebase/app";
+import { getDatabase, ref, set, child, get } from "firebase/database";
 import { Room } from "./schema";
 
 const firebaseConfig = {
@@ -26,4 +26,20 @@ export async function createToDb(path: string, data: Room) {
   } catch (error) {
     console.log(error);
   }
+}
+
+// function that returns all rooms
+export async function getAllRooms() {
+  const dbRef = ref(db);
+  get(child(dbRef, "Rooms/"))
+    .then((snapshot) => {
+      if (snapshot.exists()) {
+        console.log(snapshot.val());
+      } else {
+        console.log("No data available");
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+    });
 }

@@ -2,6 +2,7 @@ import { merriweather, poppins } from "./layout";
 import Carousel from "./Carousel";
 import CenterActions from "./CenterActions";
 import ButtonTest from "./ButtonTest";
+import HomeNavbar from "./HomeNavbar";
 
 export default function Home() {
   const images: string[] = [
@@ -12,12 +13,13 @@ export default function Home() {
   ];
 
   return (
-    <div className="relative">
+    <main className="relative">
       <div className={poppins.className}>
+        <HomeNavbar />
         <Carousel images={images} />
         <CenterActions font={merriweather.className} route="/booking" />
 
-        <div className="font-normal">
+        <div className="font-normal font-merriweather">
           Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloribus
           alias, veritatis quibusdam modi, consequatur fuga illum officia
           pariatur eum doloremque at delectus quas? Ab error dignissimos
@@ -25,6 +27,6 @@ export default function Home() {
         </div>
         <ButtonTest />
       </div>
-    </div>
+    </main>
   );
 }
