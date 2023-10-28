@@ -17,6 +17,7 @@ import React, { SetStateAction, useState } from "react";
 import DatePicker from "react-datepicker";
 import { LiaSearchSolid } from "react-icons/lia";
 import "react-datepicker/dist/react-datepicker.css";
+import RoomList from "./RoomList";
 
 function Booking() {
   const roomClassifications = ["Presidential", "Deluxe", "Standard"];
@@ -55,7 +56,7 @@ function Booking() {
   return (
     <main className="bg-background">
       <Center>
-        <form className="flex flex-wrap w-2/3 lg:w-1/2 justify-center md:justify-normal bg-sky-50/25 p-4 rounded-md outline-dashed outline-1 outline-accent">
+        <section className="flex flex-wrap w-2/3 lg:w-1/2 justify-center md:justify-normal bg-sky-50/25 p-4 rounded-md outline-dashed outline-1 outline-accent">
           <FormControl className="basis-40">
             <FormLabel>Check-in date</FormLabel>
             <DatePicker
@@ -151,8 +152,9 @@ function Booking() {
             <LiaSearchSolid className="mr-2" />
             <span>Search</span>
           </button>
-        </form>
+        </section>
       </Center>
+      <RoomList />
     </main>
   );
 }
