@@ -56,7 +56,7 @@ function Booking() {
   return (
     <main className="bg-background">
       <Center>
-        <section className="flex flex-wrap w-2/3 lg:w-1/2 justify-center md:justify-normal bg-sky-50/25 p-4 rounded-md outline-dashed outline-1 outline-accent">
+        <section className="flex flex-wrap w-2/3 justify-center md:justify-normal bg-sky-50/25 p-4 rounded-md outline-dashed outline-1 outline-accent">
           <FormControl className="basis-40">
             <FormLabel>Check-in date</FormLabel>
             <DatePicker

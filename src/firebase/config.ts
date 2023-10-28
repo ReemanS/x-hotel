@@ -45,14 +45,22 @@ export async function getAllRooms() {
 }
 
 // function that returns all rooms as an array
-export function getAllRoomsArray() {
-  let data: { [x: string]: any }[] = [];
-  const dbRef = ref(db, "Rooms/");
-  onValue(dbRef, (snapshot) => {
-    snapshot.forEach((childSnapshot) => {
-      data.push(childSnapshot.val());
-    });
+export function getAllRoomsArray(): Promise<{ [x: string]: any }[]> {
+  return new Promise((resolve, reject) => {
+    const dbRef = ref(db, "Rooms/");
+    onValue(
+      dbRef,
+      (snapshot) => {
+        let data: { [x: string]: any }[] = [];
+        snapshot.forEach((childSnapshot) => {
+          data.push(childSnapshot.val());
+        });
+        console.log(data);
+        resolve(data);
+      },
+      (error) => {
+        reject(error);
+      }
+    );
   });
-  console.log(data);
-  return data;
 }

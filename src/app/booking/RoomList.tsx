@@ -1,13 +1,17 @@
 "use client";
 import { Center } from "@chakra-ui/layout";
 import React, { useState, useEffect } from "react";
-import { getAllRooms, getAllRoomsArray } from "@/firebase/config";
+import { getAllRoomsArray } from "@/firebase/config";
 import { Room } from "@/firebase/schema";
 
 function RoomList() {
   const [rooms, setRooms] = useState<Room[]>([]);
   useEffect(() => {
-    setRooms(getAllRoomsArray() as Room[]);
+    async function fetchRooms() {
+      const roomsArray = await getAllRoomsArray();
+      setRooms(roomsArray as Room[]);
+    }
+    fetchRooms();
   }, []);
 
   return (
