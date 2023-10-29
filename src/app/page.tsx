@@ -1,7 +1,7 @@
 import { merriweather, poppins } from "./layout";
 import Carousel from "./Carousel";
 import CenterActions from "./CenterActions";
-import ButtonTest from "./ButtonTest";
+// import ButtonTest from "./ButtonTest";
 import HomeNavbar from "./HomeNavbar";
 
 export default function Home() {
@@ -25,7 +25,6 @@ export default function Home() {
           pariatur eum doloremque at delectus quas? Ab error dignissimos
           assumenda accusamus? Ad, velit!
         </div>
-        <ButtonTest />
       </div>
     </main>
   );

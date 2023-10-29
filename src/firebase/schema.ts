@@ -55,3 +55,11 @@ export interface Room {
     endDate: string;
   };
 }
+
+export interface FormValues {
+  checkInDate: Date;
+  checkOutDate: Date;
+  guestCount: number;
+  classification: string;
+  features: { [key: string]: boolean };
+}

@@ -8,8 +8,14 @@ import {
   get,
   onValue,
   push,
+  query,
+  equalTo,
+  endBefore,
+  orderByKey,
+  orderByChild,
+  limitToFirst,
 } from "firebase/database";
-import { Room } from "./schema";
+import { Room, FormValues } from "./schema";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -27,14 +33,14 @@ const db = getDatabase(app);
 
 // CRUD functions
 // Create
-export async function createToDb(path: string, data: Room) {
-  const dbRef = ref(db, path);
-  try {
-    await set(dbRef, data);
-  } catch (error) {
-    console.log(error);
-  }
-}
+// export async function createToDb(path: string, data: Room) {
+//   const dbRef = ref(db, path);
+//   try {
+//     await set(dbRef, data);
+//   } catch (error) {
+//     console.log(error);
+//   }
+// }
 
 // Create room
 export async function createRoom(data: Room) {
@@ -74,6 +80,40 @@ export function getAllRoomsArray(): Promise<{ [x: string]: any }[]> {
         snapshot.forEach((childSnapshot) => {
           data.push(childSnapshot.val());
         });
+        console.log(data);
+        resolve(data);
+      },
+      (error) => {
+        reject(error);
+      }
+    );
+  });
+}
+
+// function that returns rooms by criteria from formValues
+export function getRoomsByCriteria(
+  formValues: FormValues
+): Promise<{ [x: string]: any }[]> {
+  return new Promise((resolve, reject) => {
+    console.log(`[schema.ts] formValues: ${JSON.stringify(formValues)}`);
+    const dbRef = ref(db, "Rooms/");
+    const roomQuery = query(
+      dbRef,
+      orderByChild("roomClassification"),
+      formValues.classification !== ""
+        ? equalTo(formValues.classification)
+        : limitToFirst(50)
+      // endBefore(formValues.guestCount, "roomCapacity"),
+      // equalTo(false, "occupancyDetails.isOccupied"),
+    );
+    onValue(
+      roomQuery,
+      (snapshot) => {
+        let data: { [x: string]: any }[] = [];
+        snapshot.forEach((childSnapshot) => {
+          data.push(childSnapshot.val());
+        });
+        console.log("[schema.ts] data: ");
         console.log(data);
         resolve(data);
       },

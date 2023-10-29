@@ -18,6 +18,7 @@ import DatePicker from "react-datepicker";
 import { LiaSearchSolid } from "react-icons/lia";
 import "react-datepicker/dist/react-datepicker.css";
 import RoomList from "./RoomList";
+import { FormValues } from "@/firebase/schema";
 
 function Booking() {
   const roomClassifications = ["Presidential", "Deluxe", "Standard"];
@@ -47,10 +48,26 @@ function Booking() {
     });
   };
 
+  // state to contain all values of the form
+  const [formValues, setFormValues] = useState<FormValues>({
+    checkInDate: checkInDate,
+    checkOutDate: checkOutDate,
+    guestCount: guestCount,
+    classification: classification,
+    features: features,
+  });
+
   const handleSearchClick = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.preventDefault;
+    setFormValues({
+      checkInDate: checkInDate,
+      checkOutDate: checkOutDate,
+      guestCount: guestCount,
+      classification: classification ? classification : "",
+      features: features,
+    });
   };
 
   return (
@@ -154,7 +171,7 @@ function Booking() {
           </button>
         </section>
       </Center>
-      <RoomList />
+      <RoomList formValues={formValues} />
     </main>
   );
 }
