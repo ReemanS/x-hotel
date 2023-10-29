@@ -19,6 +19,7 @@ function RoomList() {
       <div className="w-2/3 lg:w-1/2">
         <div className="font-bold font-merriweather text-2xl">All Rooms</div>
       </div>
+
       {rooms.length > 0 ? (
         rooms.map((room, idx) => {
           return (

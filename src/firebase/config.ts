@@ -1,6 +1,14 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getDatabase, ref, set, child, get, onValue } from "firebase/database";
+import {
+  getDatabase,
+  ref,
+  set,
+  child,
+  get,
+  onValue,
+  push,
+} from "firebase/database";
 import { Room } from "./schema";
 
 const firebaseConfig = {
@@ -23,6 +31,17 @@ export async function createToDb(path: string, data: Room) {
   const dbRef = ref(db, path);
   try {
     await set(dbRef, data);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+// Create room
+export async function createRoom(data: Room) {
+  const dbRef = ref(db, "Rooms/");
+  try {
+    const newRoom = await push(dbRef);
+    await set(newRoom, data);
   } catch (error) {
     console.log(error);
   }

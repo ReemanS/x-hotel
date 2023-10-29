@@ -1,5 +1,4 @@
 export let testData: Room = {
-  roomId: 1,
   roomName: "Room 1",
   roomDescription: "This is room 1",
   roomCapacity: 10,
@@ -29,7 +28,6 @@ export let testData: Room = {
 };
 
 export interface Room {
-  roomId: number;
   roomName: string;
   roomDescription: string;
   roomCapacity: number;
