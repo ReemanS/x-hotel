@@ -18,7 +18,7 @@ import DatePicker from "react-datepicker";
 import { LiaSearchSolid } from "react-icons/lia";
 import "react-datepicker/dist/react-datepicker.css";
 import RoomList from "./RoomList";
-import { FormValues } from "@/firebase/schema";
+import { FormValues, FormRoomFeatures } from "@/firebase/schema";
 
 function Booking() {
   const roomClassifications = ["Presidential", "Deluxe", "Standard"];
@@ -38,13 +38,11 @@ function Booking() {
   ) => {
     setClassification(event.target.value);
   };
-  const [features, setFeatures] = useState<{ [key: string]: boolean }>(
-    roomFeatures
-  );
-  const handleSelectFeatures = (feature: string) => {
+  const [features, setFeatures] = useState<FormRoomFeatures>(roomFeatures);
+  const handleSelectFeatures = (featureKey: string) => {
     setFeatures({
       ...features,
-      [feature]: !features[feature],
+      [featureKey]: !features[featureKey as keyof FormRoomFeatures],
     });
   };
 
@@ -68,6 +66,7 @@ function Booking() {
       classification: classification ? classification : "",
       features: features,
     });
+    console.log(`[page.tsx (booking)]: ${JSON.stringify(formValues)}`);
   };
 
   return (
@@ -128,7 +127,7 @@ function Booking() {
               <SimpleGrid columns={2} spacing={2}>
                 <Checkbox
                   value="hasCityView"
-                  checked={features[0]}
+                  checked={features.hasCityView}
                   onChange={() => handleSelectFeatures("hasCityView")}
                   className=" text-sm md:text-base"
                 >
@@ -136,7 +135,7 @@ function Booking() {
                 </Checkbox>
                 <Checkbox
                   value="hasPrivatePool"
-                  checked={features[1]}
+                  checked={features.hasPrivatePool}
                   onChange={() => handleSelectFeatures("hasPrivatePool")}
                   className=" text-sm md:text-base"
                 >
@@ -144,7 +143,7 @@ function Booking() {
                 </Checkbox>
                 <Checkbox
                   value="hasShower"
-                  checked={features[2]}
+                  checked={features.hasShower}
                   onChange={() => handleSelectFeatures("hasShower")}
                   className="text-sm md:text-base"
                 >
@@ -152,7 +151,7 @@ function Booking() {
                 </Checkbox>
                 <Checkbox
                   value="isPetFriendly"
-                  checked={features[3]}
+                  checked={features.isPetFriendly}
                   onChange={() => handleSelectFeatures("isPetFriendly")}
                   className=" text-sm md:text-base"
                 >

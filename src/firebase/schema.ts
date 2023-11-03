@@ -22,8 +22,8 @@ export let testData: Room = {
   occupancyDetails: {
     isOccupied: false,
     transId: "abc",
-    startDate: "2021-01-01",
-    endDate: "2021-01-02",
+    startDate: new Date(2021, 0, 1),
+    endDate: new Date(2021, 0, 2),
   },
 };
 
@@ -51,15 +51,22 @@ export interface Room {
   occupancyDetails: {
     isOccupied: boolean;
     transId: string;
-    startDate: string;
-    endDate: string;
+    startDate: Date | string;
+    endDate: Date | string;
   };
 }
 
 export interface FormValues {
-  checkInDate: Date;
-  checkOutDate: Date;
+  checkInDate: Date | string;
+  checkOutDate: Date | string;
   guestCount: number;
   classification: string;
-  features: { [key: string]: boolean };
+  features: FormRoomFeatures;
+}
+
+export interface FormRoomFeatures {
+  hasCityView: boolean;
+  hasPrivatePool: boolean;
+  hasShower: boolean;
+  isPetFriendly: boolean;
 }
