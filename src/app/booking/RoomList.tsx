@@ -7,7 +7,9 @@ import { Room, FormValues } from "@/firebase/schema";
 function RoomList({ formValues }: { formValues: FormValues }) {
   const [allRooms, setAllRooms] = useState<Room[]>([]);
   const [rooms, setRooms] = useState<Room[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
+  // Effect for fetching all rooms
   useEffect(() => {
     async function fetchRooms() {
       const roomsArray = await getAllRoomsArray();
@@ -16,7 +18,7 @@ function RoomList({ formValues }: { formValues: FormValues }) {
     }
     fetchRooms();
   }, []);
-  // effect for fetching rooms by criteria from formValues
+  // Effect for fetching rooms by criteria from formValues
   // useEffect(() => {
   //   async function fetchRoomsByCriteria() {
   //     const roomsArray = await getRoomsByCriteria(formValues);
@@ -25,6 +27,11 @@ function RoomList({ formValues }: { formValues: FormValues }) {
   //   fetchRoomsByCriteria();
   // }, [formValues]);
 
+  useEffect(() => {
+    setIsLoading((prev) => !prev);
+  }, [allRooms]);
+
+  // Effect for fetching rooms by criteria from formValues
   useEffect(() => {
     let tempRooms: Room[] = [];
     allRooms.map((room) => {
@@ -116,29 +123,26 @@ function RoomList({ formValues }: { formValues: FormValues }) {
   return (
     <Center className="md:mt-8 mt-6 bg-yellow-50 flex flex-col">
       <div className="w-2/3">
-        <div className="font-bold font-merriweather text-2xl">All Rooms</div>
+        <div className="font-bold text-2xl mb-2">Our rooms</div>
       </div>
 
-      {rooms.length > 0 ? (
-        rooms.map((room, idx) => {
-          return (
-            <div key={idx} className="w-2/3 lg:w-1/2">
-              <div className="flex flex-row justify-between">
-                <div className="font-bold font-merriweather text-2xl">
-                  {room.roomName}
+      {isLoading ? (
+        rooms.length > 0 ? (
+          rooms.map((room, idx) => {
+            return (
+              <article key={idx} className="w-2/3 flex bg-rose-200 p-2">
+                <div className="bg-orange-100 w-1/3 h-">
+                  <img src={room.roomImages.img1} className="object-cover" />
                 </div>
-                <div className="font-bold font-merriweather text-2xl">
-                  {room.roomCapacity}
-                </div>
-              </div>
-              <div className="font-bold font-merriweather text-2xl">
-                {room.roomDescription}
-              </div>
-            </div>
-          );
-        })
+                <div className=""></div>
+              </article>
+            );
+          })
+        ) : (
+          <div>No rooms found</div>
+        )
       ) : (
-        <div>Loading...</div>
+        <div>Loading</div>
       )}
     </Center>
   );
