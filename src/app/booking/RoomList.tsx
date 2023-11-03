@@ -4,7 +4,10 @@ import React, { useState, useEffect } from "react";
 import { getAllRoomsArray } from "@/firebase/config";
 import { Room, FormValues } from "@/firebase/schema";
 import { AiFillStar } from "react-icons/ai";
-import { Roboto_Mono } from "next/font/google";
+import { BiSolidCity, BiSolidShower, BiSolidBed } from "react-icons/bi";
+import { PiSwimmingPoolFill } from "react-icons/pi";
+import { MdPets } from "react-icons/md";
+import { BsFillPersonFill } from "react-icons/bs";
 
 function RoomList({ formValues }: { formValues: FormValues }) {
   const [allRooms, setAllRooms] = useState<Room[]>([]);
@@ -115,7 +118,7 @@ function RoomList({ formValues }: { formValues: FormValues }) {
     );
   };
 
-  const handleClassification = (classification: string) => {
+  const displayClassificationIcons = (classification: string) => {
     if (classification === "Presidential") {
       return (
         <div className="flex">
@@ -148,22 +151,72 @@ function RoomList({ formValues }: { formValues: FormValues }) {
             return (
               <article
                 key={idx}
-                className="w-2/3 h-full md:h-64 flex flex-col md:flex-row p-3 mb-3 rounded-md bg-primary/5 text-text"
+                className="w-2/3 h-full md:h-64 flex flex-col md:flex-row p-3 mb-3 rounded-md bg-primary/5 text-text hover:bg-primary/10 active:bg-accent/20 duration-200 cursor-pointer"
               >
                 <img
                   src={room.roomImages.img1}
-                  className="object-cover mb-2 md:mb-0 sm:w-full md:max-w-[33%] mr-3 rounded"
+                  className="object-cover mb-2 md:mb-0 sm:w-full lg:max-w-[33%] mr-3 rounded"
                 />
-                <div className="">
+                <div className="w-full">
                   <div className="font-merriweather text-2xl font-bold">
                     {room.roomName}
                   </div>
                   <div className="font-poppins text-sm flex items-center mb-2">
-                    {handleClassification(room.roomClassification)}
+                    {displayClassificationIcons(room.roomClassification)}
                     {room.roomClassification}
                   </div>
-                  <div className="font-poppins text-md flex items-center">
+                  <div className="font-poppins text-md">
                     {room.roomDescription}
+                  </div>
+                  <div className="flex font-poppins">
+                    <div>
+                      <div className="font-bold">Features</div>
+                      <div className="flex flex-col w-28 md:w-60">
+                        {room.roomFeatures.hasCityView && (
+                          <div className="flex items-center">
+                            <BiSolidCity className="mr-1 text-primary" />
+                            <div className="text-sm">City View</div>
+                          </div>
+                        )}
+                        {room.roomFeatures.hasPrivatePool && (
+                          <div className="flex items-center">
+                            <PiSwimmingPoolFill className="mr-1 text-primary" />
+                            <div className="text-sm">Private Pool</div>
+                          </div>
+                        )}
+                        {room.roomFeatures.hasShower && (
+                          <div className="flex items-center">
+                            <BiSolidShower className="mr-1 text-primary" />
+                            <div className="text-sm">Shower</div>
+                          </div>
+                        )}
+                        {room.roomFeatures.isPetFriendly && (
+                          <div className="flex items-center">
+                            <MdPets className="mr-1 text-primary" />
+                            <div className="text-sm">Pet Friendly</div>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                    <div>
+                      <div className="font-bold">Capacity</div>
+                      <div className="flex items-center">
+                        <BsFillPersonFill className="mr-1 text-primary" />
+                        <div className="text-sm">
+                          {room.roomCapacity}{" "}
+                          {room.roomCapacity > 1 ? "guests" : "guest"}
+                        </div>
+                      </div>
+                      <div className="flex items-center">
+                        <BiSolidBed className="mr-1 text-primary" />
+                        <div className="text-sm">
+                          {room.roomBeds.bedCount} {room.roomBeds.bedSize}{" "}
+                          {room.roomBeds.bedCount > 1
+                            ? "size beds"
+                            : "size bed"}{" "}
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </article>
