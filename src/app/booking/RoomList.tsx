@@ -8,11 +8,24 @@ import { BiSolidCity, BiSolidShower, BiSolidBed } from "react-icons/bi";
 import { PiSwimmingPoolFill } from "react-icons/pi";
 import { MdPets } from "react-icons/md";
 import { BsFillPersonFill } from "react-icons/bs";
+import {
+  Button,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+} from "@chakra-ui/react";
+import RoomModal from "./RoomModal";
 
 function RoomList({ formValues }: { formValues: FormValues }) {
   const [allRooms, setAllRooms] = useState<Room[]>([]);
   const [rooms, setRooms] = useState<Room[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const [openRoomIndex, setOpenRoomIndex] = useState(-1);
 
   // Effect for fetching all rooms
   useEffect(() => {
@@ -152,7 +165,32 @@ function RoomList({ formValues }: { formValues: FormValues }) {
               <article
                 key={idx}
                 className="w-2/3 h-full md:h-64 flex flex-col md:flex-row p-3 mb-3 rounded-md bg-primary/5 text-text hover:bg-primary/10 active:bg-accent/20 duration-200 cursor-pointer"
+                onClick={() => setOpenRoomIndex(idx)}
               >
+                <Modal
+                  isOpen={openRoomIndex === idx}
+                  onClose={() => setOpenRoomIndex(-1)}
+                >
+                  <ModalOverlay />
+                  <ModalContent>
+                    <ModalHeader>{room.roomName}</ModalHeader>
+                    <ModalCloseButton />
+                    <ModalBody>
+                      <div>HelloHello</div>
+                    </ModalBody>
+
+                    <ModalFooter>
+                      <Button
+                        colorScheme="blue"
+                        mr={3}
+                        onClick={() => setOpenRoomIndex(-1)}
+                      >
+                        Close
+                      </Button>
+                      <Button variant="ghost">Secondary Action</Button>
+                    </ModalFooter>
+                  </ModalContent>
+                </Modal>
                 <img
                   src={room.roomImages.img1}
                   className="object-cover mb-2 md:mb-0 sm:w-full lg:max-w-[33%] mr-3 rounded"
@@ -213,7 +251,7 @@ function RoomList({ formValues }: { formValues: FormValues }) {
                           {room.roomBeds.bedCount} {room.roomBeds.bedSize}{" "}
                           {room.roomBeds.bedCount > 1
                             ? "size beds"
-                            : "size bed"}{" "}
+                            : "size bed"}
                         </div>
                       </div>
                     </div>
