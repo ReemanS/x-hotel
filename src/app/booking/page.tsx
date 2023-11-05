@@ -19,6 +19,7 @@ import { LiaSearchSolid } from "react-icons/lia";
 import "react-datepicker/dist/react-datepicker.css";
 import RoomList from "./RoomList";
 import { FormValues, FormRoomFeatures } from "@/firebase/schema";
+import { BiSolidBookAlt } from "react-icons/bi";
 
 function Booking() {
   const roomClassifications = ["Presidential", "Deluxe", "Standard"];
@@ -162,11 +163,11 @@ function Booking() {
           </div>
           <div className="grow hidden md:block"></div>
           <button
-            className="action-button flex items-center justify-self-end self-end text-xl mt-3"
+            className="action-button flex items-center justify-self-end self-end text-lg md:text-xl mt-3"
             onClick={(e) => handleSearchClick(e)}
           >
-            <LiaSearchSolid className="mr-2" />
-            <span>Search</span>
+            <BiSolidBookAlt className="mr-2" />
+            <span>Set details</span>
           </button>
         </section>
       </Center>

@@ -1,17 +1,22 @@
 import Image from "next/image";
-import { Room } from "@/firebase/schema";
+import { FormValues, Room } from "@/firebase/schema";
 import {
   ModalHeader,
   ModalCloseButton,
   ModalBody,
   ModalFooter,
-  Button,
   Center,
   SimpleGrid,
+  FormControl,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
-import { BsChevronLeft, BsChevronRight } from "react-icons/bs";
-import { BiSolidCity, BiSolidShower } from "react-icons/bi";
+import {
+  BsChevronLeft,
+  BsChevronRight,
+  BsFillPersonFill,
+} from "react-icons/bs";
+import { FiChevronRight } from "react-icons/fi";
+import { BiSolidBed, BiSolidCity, BiSolidShower } from "react-icons/bi";
 import { MdPets } from "react-icons/md";
 import { PiSwimmingPoolFill } from "react-icons/pi";
 
@@ -38,12 +43,14 @@ function RoomModal({
   room,
   setOpenRoomIndex,
   displayClassificationIcons,
+  formValues,
 }: {
   room: Room;
   setOpenRoomIndex: React.Dispatch<React.SetStateAction<number>>;
   displayClassificationIcons: (
     classification: string
   ) => React.JSX.Element | undefined;
+  formValues: FormValues;
 }) {
   const images = [
     room.roomImages.img1,
@@ -57,6 +64,11 @@ function RoomModal({
       img.src = image;
     });
   }, []);
+
+  const localeOptions: Intl.DateTimeFormatOptions = {
+    month: "long",
+    day: "numeric",
+  };
 
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   return (
@@ -111,10 +123,12 @@ function RoomModal({
             </div>
             <div className="font-poppins text-sm">{room.roomDescription}</div>
           </div>
-          <SimpleGrid columns={2} spacing={2} className="bg-yellow-50">
+          <SimpleGrid columns={2} spacing={2} className="mb-3">
             <div>
-              <div className="font-bold">Features</div>
-              <div className="flex flex-col w-28 md:w-60">
+              <Center>
+                <div className="font-bold">Features</div>
+              </Center>
+              <div className="flex flex-col w-28 md:w-60 px-4 md:px-16">
                 {room.roomFeatures.hasCityView && (
                   <div className="flex items-center">
                     <BiSolidCity className="mr-1 text-primary" />
@@ -141,13 +155,62 @@ function RoomModal({
                 )}
               </div>
             </div>
-            <div>items2</div>
+
+            <div>
+              <Center>
+                <div className="font-bold">Capacity</div>
+              </Center>
+              <div className="px-4 md:px-12">
+                <div className="flex items-center">
+                  <BsFillPersonFill className="mr-1 text-primary" />
+                  <div className="text-sm">
+                    {room.roomCapacity}{" "}
+                    {room.roomCapacity > 1 ? "guests" : "guest"}
+                  </div>
+                </div>
+                <div className="flex items-center">
+                  <BiSolidBed className="mr-1 text-primary" />
+                  <div className="text-sm">
+                    {room.roomBeds.bedCount} {room.roomBeds.bedSize}{" "}
+                    {room.roomBeds.bedCount > 1 ? "size beds" : "size bed"}
+                  </div>
+                </div>
+              </div>
+            </div>
           </SimpleGrid>
+          <div className="text-sm w-full font-poppins">
+            <Center className="text-base font-bold">
+              Your booking details
+            </Center>
+            <div className="px-8 md:px-24">
+              <div>
+                <span className="font-bold mr-1">Check-in date:</span>
+                {new Intl.DateTimeFormat("en-US", localeOptions).format(
+                  formValues.checkInDate as Date
+                )}
+              </div>
+
+              <div>
+                <span className="font-bold mr-1">Check-out date:</span>
+                {new Intl.DateTimeFormat("en-US", localeOptions).format(
+                  formValues.checkOutDate as Date
+                )}
+              </div>
+
+              <div>
+                <span className="font-bold mr-1">Number of guests:</span>
+                <span>{formValues.guestCount}</span>
+              </div>
+            </div>
+          </div>
         </div>
       </ModalBody>
 
       <ModalFooter>
-        <div>footer</div>
+        <button className="action-button font-poppins flex items-center">
+          <span className="mr-1">Proceed</span>
+          <FiChevronRight />
+        </button>
       </ModalFooter>
     </>
   );

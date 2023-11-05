@@ -177,6 +177,7 @@ function RoomList({ formValues }: { formValues: FormValues }) {
                     <RoomModal
                       room={room}
                       setOpenRoomIndex={setOpenRoomIndex}
+                      formValues={formValues}
                       displayClassificationIcons={displayClassificationIcons}
                     />
                   </ModalContent>
