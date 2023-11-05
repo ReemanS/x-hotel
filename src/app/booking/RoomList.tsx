@@ -170,25 +170,15 @@ function RoomList({ formValues }: { formValues: FormValues }) {
                 <Modal
                   isOpen={openRoomIndex === idx}
                   onClose={() => setOpenRoomIndex(-1)}
+                  size="xl"
                 >
                   <ModalOverlay />
                   <ModalContent>
-                    <ModalHeader>{room.roomName}</ModalHeader>
-                    <ModalCloseButton />
-                    <ModalBody>
-                      <div>HelloHello</div>
-                    </ModalBody>
-
-                    <ModalFooter>
-                      <Button
-                        colorScheme="blue"
-                        mr={3}
-                        onClick={() => setOpenRoomIndex(-1)}
-                      >
-                        Close
-                      </Button>
-                      <Button variant="ghost">Secondary Action</Button>
-                    </ModalFooter>
+                    <RoomModal
+                      room={room}
+                      setOpenRoomIndex={setOpenRoomIndex}
+                      displayClassificationIcons={displayClassificationIcons}
+                    />
                   </ModalContent>
                 </Modal>
                 <img
