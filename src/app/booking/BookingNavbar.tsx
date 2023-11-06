@@ -1,5 +1,6 @@
 import { AbsoluteCenter, Center } from "@chakra-ui/react";
 import React from "react";
+import Link from "next/link";
 
 function HomeNavbar() {
   return (
@@ -8,7 +9,9 @@ function HomeNavbar() {
         <h1>Booking</h1>
       </AbsoluteCenter>
 
-      <div>X Hotel Logo</div>
+      <Link href={"/"}>
+        <div>X Hotel Logo</div>
+      </Link>
     </nav>
   );
 }

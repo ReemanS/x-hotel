@@ -1,5 +1,4 @@
 "use client";
-import { Center } from "@chakra-ui/layout";
 import React, { useState, useEffect } from "react";
 import { getAllRoomsArray } from "@/firebase/config";
 import { Room, FormValues } from "@/firebase/schema";
@@ -9,14 +8,11 @@ import { PiSwimmingPoolFill } from "react-icons/pi";
 import { MdPets } from "react-icons/md";
 import { BsFillPersonFill } from "react-icons/bs";
 import {
-  Button,
   Modal,
-  ModalBody,
-  ModalCloseButton,
+  Center,
   ModalContent,
-  ModalFooter,
-  ModalHeader,
   ModalOverlay,
+  Spinner,
 } from "@chakra-ui/react";
 import RoomModal from "./RoomModal";
 
@@ -252,7 +248,9 @@ function RoomList({ formValues }: { formValues: FormValues }) {
           <div>No rooms found</div>
         )
       ) : (
-        <div>Loading</div>
+        <Center>
+          <Spinner size="lg" color="blue.500" emptyColor="gray.200" />
+        </Center>
       )}
     </Center>
   );
