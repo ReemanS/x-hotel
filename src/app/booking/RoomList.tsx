@@ -155,7 +155,7 @@ function RoomList({ formValues }: { formValues: FormValues }) {
   return (
     <Center className="md:mt-8 mt-6 flex flex-col">
       <div className="w-2/3">
-        <div className="font-bold text-2xl mb-2">Our rooms</div>
+        <div className="font-bold text-2xl mb-2">Available Rooms</div>
       </div>
 
       {isLoading ? (
@@ -239,10 +239,7 @@ function RoomList({ formValues }: { formValues: FormValues }) {
                       <div className="flex items-center">
                         <BiSolidBed className="mr-1 text-primary" />
                         <div className="text-sm">
-                          {room.roomBeds.bedCount} {room.roomBeds.bedSize}{" "}
-                          {room.roomBeds.bedCount > 1
-                            ? "size beds"
-                            : "size bed"}
+                          {room.bedCount} {room.bedCount > 1 ? "beds" : "bed"}
                         </div>
                       </div>
                     </div>

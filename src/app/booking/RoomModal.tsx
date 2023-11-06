@@ -52,22 +52,42 @@ function RoomModal({
   ) => React.JSX.Element | undefined;
   formValues: FormValues;
 }) {
+  const [balance, setBalance] = useState<number>(0);
+
   const images = [
     room.roomImages.img1,
     room.roomImages.img2,
     room.roomImages.img3,
   ];
 
+  // Effect for preloading images and calculating balance
   useEffect(() => {
     images.forEach((image) => {
       const img = new window.Image();
       img.src = image;
     });
+    setBalance(
+      calculateBalance(
+        formValues.checkInDate as Date,
+        formValues.checkOutDate as Date,
+        room.roomDailyRate
+      )
+    );
   }, []);
 
   const localeOptions: Intl.DateTimeFormatOptions = {
     month: "long",
     day: "numeric",
+  };
+
+  const calculateBalance = (
+    checkInDate: Date,
+    checkOutDate: Date,
+    roomDailyRate: number
+  ) => {
+    const diffTime = Math.abs(checkOutDate.getTime() - checkInDate.getTime());
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return diffDays * roomDailyRate;
   };
 
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -171,8 +191,7 @@ function RoomModal({
                 <div className="flex items-center">
                   <BiSolidBed className="mr-1 text-primary" />
                   <div className="text-sm">
-                    {room.roomBeds.bedCount} {room.roomBeds.bedSize}{" "}
-                    {room.roomBeds.bedCount > 1 ? "size beds" : "size bed"}
+                    {room.bedCount} {room.bedCount > 1 ? "beds" : "bed"}
                   </div>
                 </div>
               </div>
@@ -207,6 +226,10 @@ function RoomModal({
       </ModalBody>
 
       <ModalFooter>
+        <div className="flex flex-col mr-4 font-poppins">
+          <span className="font-bold mr-1">Total balance:</span>
+          <span>₱ {balance.toFixed(2)}</span>
+        </div>
         <button className="action-button font-poppins flex items-center">
           <span className="mr-1">Proceed</span>
           <FiChevronRight />
