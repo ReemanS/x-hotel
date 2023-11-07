@@ -243,8 +243,8 @@ function RoomModal({
                 query: {
                   roomNumber: room.roomNumber,
                   roomName: room.roomName,
-                  checkInDate: formValues.checkInDate as string,
-                  checkOutDate: formValues.checkOutDate as string,
+                  checkInDate: formValues.checkInDate.toLocaleString(),
+                  checkOutDate: formValues.checkOutDate.toLocaleString(),
                   guestCount: formValues.guestCount,
                   balance: balance,
                 },
