@@ -13,7 +13,7 @@ import {
 import { BsRecordCircleFill } from "react-icons/bs";
 import React from "react";
 
-export const steps = [
+const steps = [
   { title: "Select room and dates" },
   { title: "Enter your payment details" },
   { title: "Confirmation" },

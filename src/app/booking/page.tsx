@@ -12,7 +12,6 @@ import {
   NumberInputStepper,
   Select,
   SimpleGrid,
-  useSteps,
   useToast,
 } from "@chakra-ui/react";
 import React, { SetStateAction, useState } from "react";
@@ -22,7 +21,6 @@ import RoomList from "./RoomList";
 import { FormValues, FormRoomFeatures } from "@/firebase/schema";
 import { BiSolidBookAlt } from "react-icons/bi";
 import ProgressSteps from "./ProgressSteps";
-import { steps } from "./ProgressSteps";
 
 function Booking() {
   const roomClassifications = ["Presidential", "Deluxe", "Standard"];
@@ -81,15 +79,9 @@ function Booking() {
     console.log(`[page.tsx (booking)]: ${JSON.stringify(formValues)}`);
   };
 
-  // Stepper hook
-  const { activeStep, setActiveStep } = useSteps({
-    index: 0,
-    count: steps.length,
-  });
-
   return (
     <>
-      <ProgressSteps activeStep={activeStep} />
+      <ProgressSteps activeStep={0} />
       <main className="bg-background">
         <Center>
           <section className="flex flex-wrap w-2/3 justify-center md:justify-normal bg-sky-50/25 p-4 rounded-md outline-dashed outline-1 outline-accent">
