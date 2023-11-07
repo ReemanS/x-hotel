@@ -12,14 +12,17 @@ import {
   NumberInputStepper,
   Select,
   SimpleGrid,
+  useSteps,
+  useToast,
 } from "@chakra-ui/react";
 import React, { SetStateAction, useState } from "react";
 import DatePicker from "react-datepicker";
-import { LiaSearchSolid } from "react-icons/lia";
 import "react-datepicker/dist/react-datepicker.css";
 import RoomList from "./RoomList";
 import { FormValues, FormRoomFeatures } from "@/firebase/schema";
 import { BiSolidBookAlt } from "react-icons/bi";
+import ProgressSteps from "./ProgressSteps";
+import { steps } from "./ProgressSteps";
 
 function Booking() {
   const roomClassifications = ["Presidential", "Deluxe", "Standard"];
@@ -46,6 +49,7 @@ function Booking() {
       [featureKey]: !features[featureKey as keyof FormRoomFeatures],
     });
   };
+  const toast = useToast();
 
   // state to contain all values of the form
   const [formValues, setFormValues] = useState<FormValues>({
@@ -67,112 +71,132 @@ function Booking() {
       classification: classification ? classification : "",
       features: features,
     });
+    toast({
+      title: "Booking details set!",
+      status: "info",
+      duration: 1500,
+      isClosable: true,
+      position: "top",
+    });
     console.log(`[page.tsx (booking)]: ${JSON.stringify(formValues)}`);
   };
 
+  // Stepper hook
+  const { activeStep, setActiveStep } = useSteps({
+    index: 0,
+    count: steps.length,
+  });
+
   return (
-    <main className="bg-background">
-      <Center>
-        <section className="flex flex-wrap w-2/3 justify-center md:justify-normal bg-sky-50/25 p-4 rounded-md outline-dashed outline-1 outline-accent">
-          <FormControl className="basis-40">
-            <FormLabel>Check-in date</FormLabel>
-            <DatePicker
-              selected={checkInDate}
-              onChange={(date) => setCheckinDate(date as SetStateAction<Date>)}
-              className="h-10 p-1 duration-200 outline outline-1 outline-blue-50 hover:outline-secondary active:outline-2 active:outline-primary  w-32 bg-transparent rounded-md"
-            />
-          </FormControl>
-          <FormControl className=" basis-40">
-            <FormLabel>Check-out date</FormLabel>
-            <DatePicker
-              selected={checkOutDate}
-              onChange={(date) => setCheckOutDate(date as SetStateAction<Date>)}
-              className="h-10 p-1 duration-200 outline outline-1 outline-blue-50 hover:outline-secondary active:outline-2 active:outline-primary  w-32 bg-transparent rounded-md"
-            />
-          </FormControl>
-          <FormControl className=" basis-36 pe-8">
-            <FormLabel>Guest count</FormLabel>
-            <NumberInput
-              min={1}
-              value={guestCount}
-              onChange={(newValue) => setGuestCount(parseInt(newValue))}
+    <>
+      <ProgressSteps activeStep={activeStep} />
+      <main className="bg-background">
+        <Center>
+          <section className="flex flex-wrap w-2/3 justify-center md:justify-normal bg-sky-50/25 p-4 rounded-md outline-dashed outline-1 outline-accent">
+            <FormControl className="basis-40">
+              <FormLabel>Check-in date</FormLabel>
+              <DatePicker
+                selected={checkInDate}
+                onChange={(date) =>
+                  setCheckinDate(date as SetStateAction<Date>)
+                }
+                className="h-10 p-1 duration-200 outline outline-1 outline-blue-50 hover:outline-secondary active:outline-2 active:outline-primary  w-32 bg-transparent rounded-md"
+              />
+            </FormControl>
+            <FormControl className=" basis-40">
+              <FormLabel>Check-out date</FormLabel>
+              <DatePicker
+                selected={checkOutDate}
+                onChange={(date) =>
+                  setCheckOutDate(date as SetStateAction<Date>)
+                }
+                className="h-10 p-1 duration-200 outline outline-1 outline-blue-50 hover:outline-secondary active:outline-2 active:outline-primary  w-32 bg-transparent rounded-md"
+              />
+            </FormControl>
+            <FormControl className=" basis-36 pe-8">
+              <FormLabel>Guest count</FormLabel>
+              <NumberInput
+                min={1}
+                value={guestCount}
+                onChange={(newValue) => setGuestCount(parseInt(newValue))}
+              >
+                <NumberInputField />
+                <NumberInputStepper>
+                  <NumberIncrementStepper />
+                  <NumberDecrementStepper />
+                </NumberInputStepper>
+              </NumberInput>
+            </FormControl>
+            <FormControl className=" basis-56 grow pb-2 mr-2">
+              <FormLabel>Classification</FormLabel>
+              <Select
+                placeholder="Select classification"
+                value={classification}
+                onChange={handleSelectClassification}
+              >
+                {roomClassifications.map((classification) => (
+                  <option
+                    key={classification}
+                    value={classification}
+                    className="font-sans"
+                  >
+                    {classification}
+                  </option>
+                ))}
+              </Select>
+            </FormControl>
+            <div className=" basis-96 pr-0 md:pr-6">
+              <FormLabel>Features</FormLabel>
+              <CheckboxGroup>
+                <SimpleGrid columns={2} spacing={2}>
+                  <Checkbox
+                    value="hasCityView"
+                    checked={features.hasCityView}
+                    onChange={() => handleSelectFeatures("hasCityView")}
+                    className=" text-sm md:text-base"
+                  >
+                    With city view
+                  </Checkbox>
+                  <Checkbox
+                    value="hasPrivatePool"
+                    checked={features.hasPrivatePool}
+                    onChange={() => handleSelectFeatures("hasPrivatePool")}
+                    className=" text-sm md:text-base"
+                  >
+                    With private pool
+                  </Checkbox>
+                  <Checkbox
+                    value="hasShower"
+                    checked={features.hasShower}
+                    onChange={() => handleSelectFeatures("hasShower")}
+                    className="text-sm md:text-base"
+                  >
+                    With shower
+                  </Checkbox>
+                  <Checkbox
+                    value="isPetFriendly"
+                    checked={features.isPetFriendly}
+                    onChange={() => handleSelectFeatures("isPetFriendly")}
+                    className=" text-sm md:text-base"
+                  >
+                    Pet friendly
+                  </Checkbox>
+                </SimpleGrid>
+              </CheckboxGroup>
+            </div>
+            <div className="grow hidden md:block"></div>
+            <button
+              className="action-button flex items-center justify-self-end self-end text-lg md:text-xl mt-3"
+              onClick={(e) => handleSearchClick(e)}
             >
-              <NumberInputField />
-              <NumberInputStepper>
-                <NumberIncrementStepper />
-                <NumberDecrementStepper />
-              </NumberInputStepper>
-            </NumberInput>
-          </FormControl>
-          <FormControl className=" basis-56 grow pb-2 mr-2">
-            <FormLabel>Classification</FormLabel>
-            <Select
-              placeholder="Select classification"
-              value={classification}
-              onChange={handleSelectClassification}
-            >
-              {roomClassifications.map((classification) => (
-                <option
-                  key={classification}
-                  value={classification}
-                  className="font-sans"
-                >
-                  {classification}
-                </option>
-              ))}
-            </Select>
-          </FormControl>
-          <div className=" basis-96 pr-0 md:pr-6">
-            <FormLabel>Features</FormLabel>
-            <CheckboxGroup>
-              <SimpleGrid columns={2} spacing={2}>
-                <Checkbox
-                  value="hasCityView"
-                  checked={features.hasCityView}
-                  onChange={() => handleSelectFeatures("hasCityView")}
-                  className=" text-sm md:text-base"
-                >
-                  With city view
-                </Checkbox>
-                <Checkbox
-                  value="hasPrivatePool"
-                  checked={features.hasPrivatePool}
-                  onChange={() => handleSelectFeatures("hasPrivatePool")}
-                  className=" text-sm md:text-base"
-                >
-                  With private pool
-                </Checkbox>
-                <Checkbox
-                  value="hasShower"
-                  checked={features.hasShower}
-                  onChange={() => handleSelectFeatures("hasShower")}
-                  className="text-sm md:text-base"
-                >
-                  With shower
-                </Checkbox>
-                <Checkbox
-                  value="isPetFriendly"
-                  checked={features.isPetFriendly}
-                  onChange={() => handleSelectFeatures("isPetFriendly")}
-                  className=" text-sm md:text-base"
-                >
-                  Pet friendly
-                </Checkbox>
-              </SimpleGrid>
-            </CheckboxGroup>
-          </div>
-          <div className="grow hidden md:block"></div>
-          <button
-            className="action-button flex items-center justify-self-end self-end text-lg md:text-xl mt-3"
-            onClick={(e) => handleSearchClick(e)}
-          >
-            <BiSolidBookAlt className="mr-2" />
-            <span>Set details</span>
-          </button>
-        </section>
-      </Center>
-      <RoomList formValues={formValues} />
-    </main>
+              <BiSolidBookAlt className="mr-2" />
+              <span>Set details</span>
+            </button>
+          </section>
+        </Center>
+        <RoomList formValues={formValues} />
+      </main>
+    </>
   );
 }
 

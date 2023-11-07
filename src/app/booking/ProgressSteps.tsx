@@ -13,17 +13,13 @@ import {
 import { BsRecordCircleFill } from "react-icons/bs";
 import React from "react";
 
-function ProgressSteps() {
-  const steps = [
-    { title: "Select room and dates" },
-    { title: "Enter your payment details" },
-    { title: "Confirmation" },
-  ];
+export const steps = [
+  { title: "Select room and dates" },
+  { title: "Enter your payment details" },
+  { title: "Confirmation" },
+];
 
-  const { activeStep, setActiveStep } = useSteps({
-    index: 0,
-    count: steps.length,
-  });
+function ProgressSteps({ activeStep }: { activeStep: number }) {
   const activeStepText = steps[activeStep].title;
 
   return (

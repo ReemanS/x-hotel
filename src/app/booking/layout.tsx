@@ -9,7 +9,7 @@ function Layout({ children }: { children: React.ReactNode }) {
       className={`${poppins.variable} ${poppins.className} ${merriweather.variable} `}
     >
       <BookingNavbar />
-      <ProgressSteps />
+
       {children}
     </div>
   );
