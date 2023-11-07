@@ -155,25 +155,25 @@ function Payment() {
             </div>
 
             <hr className="mb-2" />
-            <SimpleGrid
-              columns={2}
-              spacing={4}
-              className="text-sm mb-2 text-accent"
-            >
+            <div className="flex justify-between text-accent">
               <div className="font-bold text-sm md:text-base">
                 Total amount:
               </div>
               <div className="text-sm md:text-base font-bold">{`₱ ${searchParams.get(
                 "balance"
               )}.00`}</div>
-            </SimpleGrid>
+            </div>
+
             <hr className="mb-2" />
             <Checkbox
               checked={checked}
               onChange={() => setChecked(!checked)}
-              className="text-sm md:text-base mb-4"
+              className="mb-4"
             >
-              I confirm that the information I have provided is true and correct
+              <span className="text-sm md:text-base">
+                I confirm that the information I have provided is true and
+                correct
+              </span>
             </Checkbox>
             <button className="action-button w-full">Confirm Payment</button>
           </section>
