@@ -1,13 +1,13 @@
 import React from "react";
-import BookingNavbar from "./booking/BookingNavbar";
-import { poppins, merriweather } from "../layout";
+import PaymentNavbar from "./PaymentNavbar";
+import { poppins, merriweather } from "../../layout";
 
 function Layout({ children }: { children: React.ReactNode }) {
   return (
     <div
       className={`${poppins.variable} ${poppins.className} ${merriweather.variable} `}
     >
-      <BookingNavbar />
+      <PaymentNavbar />
 
       {children}
     </div>

@@ -69,3 +69,17 @@ export interface FormRoomFeatures {
   hasShower: boolean;
   isPetFriendly: boolean;
 }
+
+export interface Transaction {
+  transId: string;
+  transAmount: number;
+  transDate: Date | string;
+  guestCount: number;
+  roomDetails: {
+    roomId: string;
+    startDate: Date | string;
+    endDate: Date | string;
+  };
+  customerName: string;
+  customerPhoneNumber: string;
+}
