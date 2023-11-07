@@ -19,6 +19,7 @@ import { FiChevronRight } from "react-icons/fi";
 import { BiSolidBed, BiSolidCity, BiSolidShower } from "react-icons/bi";
 import { MdPets } from "react-icons/md";
 import { PiSwimmingPoolFill } from "react-icons/pi";
+import Link from "next/link";
 
 const shimmer = (w: number, h: number) => `
 <svg width="${w}" height="${h}" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -226,14 +227,39 @@ function RoomModal({
       </ModalBody>
 
       <ModalFooter>
-        <div className="flex flex-col mr-4 font-poppins">
-          <span className="font-bold mr-1">Total balance:</span>
-          <span>₱ {balance.toFixed(2)}</span>
-        </div>
-        <button className="action-button font-poppins flex items-center">
-          <span className="mr-1">Proceed</span>
-          <FiChevronRight />
-        </button>
+        {balance === 0 ? (
+          <div className="text-red-500 text-sm">
+            Please select different dates for check-in and check-out
+          </div>
+        ) : (
+          <>
+            <div className="flex flex-col mr-4 font-poppins">
+              <span className="font-bold mr-1">Total balance:</span>
+              <span>₱ {balance.toFixed(2)}</span>
+            </div>
+            <Link
+              href={{
+                pathname: "/payment",
+                query: {
+                  roomNumber: room.roomNumber,
+                  roomName: room.roomName,
+                  checkInDate: formValues.checkInDate as string,
+                  checkOutDate: formValues.checkOutDate as string,
+                  guestCount: formValues.guestCount,
+                  balance: balance,
+                },
+              }}
+            >
+              <button
+                className="action-button font-poppins flex items-center"
+                disabled={balance === 0 ? true : false}
+              >
+                <span className="mr-1">Proceed</span>
+                <FiChevronRight />
+              </button>
+            </Link>
+          </>
+        )}
       </ModalFooter>
     </>
   );

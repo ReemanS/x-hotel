@@ -1,7 +1,6 @@
 import React from "react";
-import ProgressSteps from "./ProgressSteps";
-import BookingNavbar from "./BookingNavbar";
-import { poppins, merriweather } from "../../layout";
+import BookingNavbar from "./booking/BookingNavbar";
+import { poppins, merriweather } from "../layout";
 
 function Layout({ children }: { children: React.ReactNode }) {
   return (
