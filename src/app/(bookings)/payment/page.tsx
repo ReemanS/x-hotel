@@ -13,8 +13,9 @@ import {
   Input,
   SimpleGrid,
   Checkbox,
+  FormHelperText,
+  FormErrorMessage,
 } from "@chakra-ui/react";
-import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 // {searchParams.get("roomName")}
@@ -28,6 +29,14 @@ function Payment() {
   const [contactNumber, setContactNumber] = useState("");
   const [checked, setChecked] = useState(false);
 
+  // Error checks for form
+  const isCardNumberValid = cardNumber.length === 16;
+  const isCvsCodeValid = cvsCode ? cvsCode.toString().length === 3 : false;
+  const isExpiryDateValid = expiryDate.length === 7;
+  const isCardHolderNameValid = cardHolderName.length > 0;
+  const isContactNumberValid = contactNumber.length > 0;
+
+  // Regex checks
   const formatNumberToCC = (value: string) => {
     const v = value
       .replace(/\s+/g, "")
@@ -51,6 +60,24 @@ function Payment() {
     return formatted;
   };
 
+  const allFormsValid = () => {
+    return (
+      isCardNumberValid &&
+      isCvsCodeValid &&
+      isExpiryDateValid &&
+      isCardHolderNameValid &&
+      isContactNumberValid
+    );
+  };
+
+  const handleClick = () => {
+    if (allFormsValid()) {
+      alert("Payment successful!");
+    } else {
+      alert("Please check your form");
+    }
+  };
+
   const localeOptions: Intl.DateTimeFormatOptions = {
     month: "long",
     day: "numeric",
@@ -72,16 +99,27 @@ function Payment() {
             </div>
 
             <div className="flex flex-wrap">
-              <FormControl className="basis-full">
+              <FormControl
+                isInvalid={!isCardNumberValid}
+                className="basis-full mb-2"
+              >
                 <FormLabel>Card number</FormLabel>
                 <NumberInput
                   value={formatNumberToCC(cardNumber)}
                   onChange={(newValue) => setCardNumber(newValue)}
                 >
                   <NumberInputField />
+                  {isCardNumberValid ? null : (
+                    <FormErrorMessage>
+                      Please enter a valid credit card number
+                    </FormErrorMessage>
+                  )}
                 </NumberInput>
               </FormControl>
-              <FormControl className="basis-48 grow lg:mr-2">
+              <FormControl
+                isInvalid={!isCvsCodeValid}
+                className="basis-48 grow lg:mr-2 mb-2"
+              >
                 <FormLabel>CVS Code</FormLabel>
                 <NumberInput
                   onChange={(newValue) => {
@@ -89,9 +127,15 @@ function Payment() {
                   }}
                 >
                   <NumberInputField />
+                  {isCvsCodeValid ? null : (
+                    <FormErrorMessage>Invalid CVS code</FormErrorMessage>
+                  )}
                 </NumberInput>
               </FormControl>
-              <FormControl className="basis-40 grow">
+              <FormControl
+                isInvalid={!isExpiryDateValid}
+                className="basis-40 grow mb-2"
+              >
                 <FormLabel>Expiry Date</FormLabel>
                 <Input
                   type="text"
@@ -100,8 +144,14 @@ function Payment() {
                     setExpiryDate(formatExpiryDate(newValue.target.value))
                   }
                 />
+                {isExpiryDateValid ? null : (
+                  <FormErrorMessage>Invalid expiry date</FormErrorMessage>
+                )}
               </FormControl>
-              <FormControl className="basis-full">
+              <FormControl
+                isInvalid={!isCardHolderNameValid}
+                className="basis-full mb-2"
+              >
                 <FormLabel>Card Holder Name</FormLabel>
                 <Input
                   type="text"
@@ -110,8 +160,14 @@ function Payment() {
                     setCardHolderName(newValue.target.value)
                   }
                 />
+                {isCardHolderNameValid ? null : (
+                  <FormErrorMessage>Please enter your name</FormErrorMessage>
+                )}
               </FormControl>
-              <FormControl className="basis-full">
+              <FormControl
+                isInvalid={!isContactNumberValid}
+                className="basis-full mb-2"
+              >
                 <FormLabel>Contact Number</FormLabel>
                 <Input
                   type="text"
@@ -120,10 +176,15 @@ function Payment() {
                     setContactNumber(newValue.target.value)
                   }
                 />
+                {isContactNumberValid ? null : (
+                  <FormErrorMessage>
+                    Please enter your contact number
+                  </FormErrorMessage>
+                )}
               </FormControl>
             </div>
           </section>
-          <section className="basis-full md:basis-1/3 justify-center md:justify-normal bg-sky-50/25 p-4 rounded-md outline-dashed outline-1 outline-accent font-poppins">
+          <section className="basis-full md:basis-1/3 flex flex-col flex-wrap justify-center md:justify-normal bg-sky-50/25 p-4 rounded-md outline-dashed outline-1 outline-accent font-poppins">
             <Center>
               <h1 className="text-base md:text-xl mb-4">Summary</h1>
             </Center>
@@ -155,6 +216,7 @@ function Payment() {
             </div>
 
             <hr className="mb-2" />
+
             <div className="flex justify-between text-accent">
               <div className="font-bold text-sm md:text-base">
                 Total amount:
@@ -165,17 +227,30 @@ function Payment() {
             </div>
 
             <hr className="mb-2" />
-            <Checkbox
-              checked={checked}
-              onChange={() => setChecked(!checked)}
-              className="mb-4"
-            >
-              <span className="text-sm md:text-base">
-                I confirm that the information I have provided is true and
-                correct
-              </span>
-            </Checkbox>
-            <button className="action-button w-full">Confirm Payment</button>
+
+            <div className="mt-auto">
+              <Checkbox
+                checked={checked}
+                onChange={() => setChecked(!checked)}
+                className="mb-4"
+              >
+                <span className="text-sm md:text-base">
+                  I confirm that the information I have provided is true and
+                  correct
+                </span>
+              </Checkbox>
+              <button
+                className={
+                  allFormsValid()
+                    ? `action-button w-full`
+                    : `disabled-action-button w-full`
+                }
+                disabled={!allFormsValid()}
+                onClick={handleClick}
+              >
+                Confirm Payment
+              </button>
+            </div>
           </section>
         </div>
       </Center>

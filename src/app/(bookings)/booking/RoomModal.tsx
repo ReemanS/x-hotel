@@ -14,6 +14,7 @@ import {
   BsChevronLeft,
   BsChevronRight,
   BsFillPersonFill,
+  BsCashStack,
 } from "react-icons/bs";
 import { FiChevronRight } from "react-icons/fi";
 import { BiSolidBed, BiSolidCity, BiSolidShower } from "react-icons/bi";
@@ -138,13 +139,17 @@ function RoomModal({
             <div className="font-merriweather font-bold text-2xl">
               {room.roomName}
             </div>
-            <div className="flex items-center font-poppins text-xs mb-2">
+            <div className="flex items-center font-poppins text-xs mb-0.5">
               {displayClassificationIcons(room.roomClassification)}
               {room.roomClassification}
             </div>
+            <div className="text-xs text-primary font-poppins flex items-center mb-2">
+              <BsCashStack className="mr-1" />
+              <div>₱{room.roomDailyRate} per night</div>
+            </div>
             <div className="font-poppins text-sm">{room.roomDescription}</div>
           </div>
-          <SimpleGrid columns={2} spacing={2} className="mb-3">
+          <SimpleGrid columns={2} spacing={2} className="mb-3 font-poppins">
             <div>
               <Center>
                 <div className="font-bold">Features</div>

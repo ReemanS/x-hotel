@@ -10,7 +10,12 @@ function HomeNavbar() {
       </AbsoluteCenter>
 
       <Link href={"/"}>
-        <img src="/x-hotel_logo.svg" alt="Logo" width={64} />
+        <img
+          src="/x-hotel_logo.svg"
+          alt="Logo"
+          width={80}
+          className="bg-background/25 p-2 rounded-lg"
+        />
       </Link>
     </nav>
   );
