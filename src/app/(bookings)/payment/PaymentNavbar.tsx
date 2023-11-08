@@ -10,7 +10,7 @@ function HomeNavbar() {
       </AbsoluteCenter>
 
       <Link href={"/"}>
-        <div>X Hotel Logo</div>
+        <img src="/x-hotel_logo.svg" alt="Logo" width={64} />
       </Link>
     </nav>
   );
