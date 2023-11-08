@@ -17,6 +17,8 @@ import {
   FormErrorMessage,
 } from "@chakra-ui/react";
 import "react-datepicker/dist/react-datepicker.css";
+import { OccupancyData } from "@/firebase/schema";
+import { editRoomOccupancyDetails } from "@/firebase/config";
 
 // {searchParams.get("roomName")}
 
@@ -70,9 +72,26 @@ function Payment() {
     );
   };
 
-  const handleClick = () => {
+  const handleClick = async () => {
     if (allFormsValid()) {
-      alert("Payment successful!");
+      const occupancyData: OccupancyData = {
+        balance: parseInt(searchParams.get("balance") as string),
+        checkInDate: searchParams.get("checkInDate") as string,
+        checkOutDate: searchParams.get("checkOutDate") as string,
+        guestCount: parseInt(searchParams.get("guestCount") as string),
+        roomName: searchParams.get("roomName") as string,
+        roomNumber: parseInt(searchParams.get("roomNumber") as string),
+        customerName: cardHolderName,
+        customerPhoneNumber: contactNumber,
+      };
+
+      const success = await editRoomOccupancyDetails(occupancyData);
+
+      if (success) {
+        alert("Payment successful");
+      } else {
+        alert("Payment failed");
+      }
     } else {
       alert("Please check your form");
     }

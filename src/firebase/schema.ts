@@ -83,3 +83,14 @@ export interface Transaction {
   customerName: string;
   customerPhoneNumber: string;
 }
+
+export interface OccupancyData {
+  roomName: string;
+  roomNumber: number;
+  checkInDate: Date | string;
+  checkOutDate: Date | string;
+  guestCount: number;
+  balance: number;
+  customerName: string;
+  customerPhoneNumber: string;
+}

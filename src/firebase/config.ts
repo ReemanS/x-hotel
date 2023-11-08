@@ -15,7 +15,7 @@ import {
   orderByChild,
   limitToFirst,
 } from "firebase/database";
-import { Room, FormValues } from "./schema";
+import { Room, FormValues, Transaction, OccupancyData } from "./schema";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -41,6 +41,38 @@ const db = getDatabase(app);
 //     console.log(error);
 //   }
 // }
+
+let emptyRoom: Room = {
+  roomNumber: 0,
+  roomName: "",
+  roomDescription: "",
+  roomCapacity: 0,
+  roomClassification: "",
+  roomDailyRate: 0,
+  bedCount: 0,
+  roomFeatures: {
+    hasCityView: false,
+    hasPrivatePool: false,
+    hasShower: false,
+    isPetFriendly: false,
+  },
+  roomImages: {
+    img1: "",
+    img2: "",
+    img3: "",
+  },
+  occupancyDetails: {
+    isOccupied: false,
+    transId: "",
+    startDate: "",
+    endDate: "",
+  },
+};
+
+// generate random id string
+export function generateId(): string {
+  return Math.random().toString(36).slice(2, 9);
+}
 
 // Create room
 export async function createRoom(data: Room) {
@@ -79,6 +111,8 @@ export function getAllRoomsArray(): Promise<{ [x: string]: any }[]> {
         let data: { [x: string]: any }[] = [];
         snapshot.forEach((childSnapshot) => {
           data.push(childSnapshot.val());
+          console.log("[schema.ts] childSnapshop.val():");
+          console.log(childSnapshot.val());
         });
         console.log(data);
         resolve(data);
@@ -103,8 +137,6 @@ export function getRoomsByCriteria(
       formValues.classification !== ""
         ? equalTo(formValues.classification)
         : limitToFirst(50)
-      // endBefore(formValues.guestCount, "roomCapacity"),
-      // equalTo(false, "occupancyDetails.isOccupied"),
     );
     onValue(
       roomQuery,
@@ -122,4 +154,37 @@ export function getRoomsByCriteria(
       }
     );
   });
+}
+
+// function that edits a certain room
+export async function editRoomOccupancyDetails(
+  occupancyData: OccupancyData
+): Promise<boolean> {
+  try {
+    const dbRef = ref(db, "Rooms/");
+    const roomQuery = query(
+      dbRef,
+      orderByChild("roomNumber"),
+      equalTo(occupancyData.roomNumber)
+    );
+    const snapshot = await get(roomQuery);
+    let isSuccessful = false;
+
+    snapshot.forEach((childSnapshot) => {
+      const data: Room = childSnapshot.val();
+      if (data.roomName === occupancyData.roomName) {
+        set(ref(db, `Rooms/${childSnapshot.key}/occupancyDetails/`), {
+          isOccupied: true,
+          transId: generateId(),
+          startDate: occupancyData.checkInDate as string,
+          endDate: occupancyData.checkOutDate as string,
+        });
+        isSuccessful = true;
+      }
+    });
+    return isSuccessful;
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
 }
