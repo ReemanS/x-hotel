@@ -15,6 +15,7 @@ import {
   Checkbox,
   FormHelperText,
   FormErrorMessage,
+  useToast,
 } from "@chakra-ui/react";
 import "react-datepicker/dist/react-datepicker.css";
 import { OccupancyData } from "@/firebase/schema";
@@ -30,6 +31,7 @@ function Payment() {
   const [cardHolderName, setCardHolderName] = useState("");
   const [contactNumber, setContactNumber] = useState("");
   const [checked, setChecked] = useState(false);
+  const toast = useToast();
 
   // Error checks for form
   const isCardNumberValid = cardNumber.length === 16;
@@ -68,7 +70,8 @@ function Payment() {
       isCvsCodeValid &&
       isExpiryDateValid &&
       isCardHolderNameValid &&
-      isContactNumberValid
+      isContactNumberValid &&
+      checked
     );
   };
 
@@ -87,10 +90,20 @@ function Payment() {
 
       const success = await editRoomOccupancyDetails(occupancyData);
 
-      if (success) {
-        alert("Payment successful");
+      if (success != "") {
+        toast({
+          title: `Payment successful: ${success}`,
+          status: "success",
+          duration: 2000,
+          isClosable: false,
+        });
       } else {
-        alert("Payment failed");
+        toast({
+          title: "Payment failed",
+          status: "error",
+          duration: 2000,
+          isClosable: false,
+        });
       }
     } else {
       alert("Please check your form");

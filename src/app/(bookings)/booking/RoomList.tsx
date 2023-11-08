@@ -20,7 +20,6 @@ function RoomList({ formValues }: { formValues: FormValues }) {
   const [allRooms, setAllRooms] = useState<Room[]>([]);
   const [rooms, setRooms] = useState<Room[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-
   const [openRoomIndex, setOpenRoomIndex] = useState(-1);
 
   // Effect for fetching all rooms
@@ -43,6 +42,7 @@ function RoomList({ formValues }: { formValues: FormValues }) {
     let tempRooms: Room[] = [];
     allRooms.map((room) => {
       if (
+        !room.occupancyDetails.isOccupied &&
         !isDateBetween(
           formValues.checkInDate,
           room.occupancyDetails.startDate,

@@ -110,9 +110,11 @@ export function getAllRoomsArray(): Promise<{ [x: string]: any }[]> {
       (snapshot) => {
         let data: { [x: string]: any }[] = [];
         snapshot.forEach((childSnapshot) => {
-          data.push(childSnapshot.val());
-          console.log("[schema.ts] childSnapshop.val():");
-          console.log(childSnapshot.val());
+          if (childSnapshot.val().occupancyDetails.isOccupied === false) {
+            data.push(childSnapshot.val());
+            console.log("[schema.ts] childSnapshop.val():");
+            console.log(childSnapshot.val());
+          }
         });
         console.log(data);
         resolve(data);
@@ -159,7 +161,7 @@ export function getRoomsByCriteria(
 // function that edits a certain room
 export async function editRoomOccupancyDetails(
   occupancyData: OccupancyData
-): Promise<boolean> {
+): Promise<string> {
   try {
     const dbRef = ref(db, "Rooms/");
     const roomQuery = query(
@@ -168,23 +170,23 @@ export async function editRoomOccupancyDetails(
       equalTo(occupancyData.roomNumber)
     );
     const snapshot = await get(roomQuery);
-    let isSuccessful = false;
+    let generatedId: string = "";
 
     snapshot.forEach((childSnapshot) => {
       const data: Room = childSnapshot.val();
       if (data.roomName === occupancyData.roomName) {
+        generatedId = generateId();
         set(ref(db, `Rooms/${childSnapshot.key}/occupancyDetails/`), {
           isOccupied: true,
-          transId: generateId(),
+          transId: generatedId,
           startDate: occupancyData.checkInDate as string,
           endDate: occupancyData.checkOutDate as string,
         });
-        isSuccessful = true;
       }
     });
-    return isSuccessful;
+    return generatedId;
   } catch (error) {
     console.log(error);
-    return false;
+    return "";
   }
 }
