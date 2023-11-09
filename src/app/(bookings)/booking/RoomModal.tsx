@@ -204,9 +204,7 @@ function RoomModal({
             </div>
           </SimpleGrid>
           <div className="text-sm w-full font-poppins">
-            <Center className="text-base font-bold">
-              Your booking details
-            </Center>
+            <Center className="text-base font-bold">Booking Details</Center>
             <div className="px-8 md:px-24">
               <div>
                 <span className="font-bold mr-1">Check-in date:</span>

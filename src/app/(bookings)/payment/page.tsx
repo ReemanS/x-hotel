@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import ProgressSteps from "../booking/ProgressSteps";
 import {
   Center,
@@ -29,6 +29,7 @@ function Payment() {
   const [contactNumber, setContactNumber] = useState("");
   const [checked, setChecked] = useState(false);
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
   const toast = useToast();
 
   // Error checks for form
@@ -100,6 +101,7 @@ function Payment() {
         },
         customerName: occupancyData.customerName,
         customerPhoneNumber: occupancyData.customerPhoneNumber,
+        paymentMethod: "card",
       });
 
       if (success != "") {
@@ -109,7 +111,7 @@ function Payment() {
           duration: 2000,
           isClosable: false,
         });
-        setLoading(false);
+        router.push("/confirmation");
       } else {
         toast({
           title: "Payment failed",

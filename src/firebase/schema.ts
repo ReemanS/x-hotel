@@ -82,6 +82,7 @@ export interface Transaction {
   };
   customerName: string;
   customerPhoneNumber: string;
+  paymentMethod: string;
 }
 
 export interface OccupancyData {
