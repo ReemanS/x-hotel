@@ -8,14 +8,11 @@ import {
   FormLabel,
   NumberInput,
   NumberInputField,
-  Grid,
-  GridItem,
   Input,
-  SimpleGrid,
   Checkbox,
-  FormHelperText,
   FormErrorMessage,
   useToast,
+  Spinner,
 } from "@chakra-ui/react";
 import "react-datepicker/dist/react-datepicker.css";
 import { OccupancyData, Transaction } from "@/firebase/schema";
@@ -31,6 +28,7 @@ function Payment() {
   const [cardHolderName, setCardHolderName] = useState("");
   const [contactNumber, setContactNumber] = useState("");
   const [checked, setChecked] = useState(false);
+  const [loading, setLoading] = useState(false);
   const toast = useToast();
 
   // Error checks for form
@@ -77,6 +75,7 @@ function Payment() {
 
   const handleClick = async () => {
     if (allFormsValid()) {
+      setLoading(true);
       const occupancyData: OccupancyData = {
         balance: parseInt(searchParams.get("balance") as string),
         checkInDate: searchParams.get("checkInDate") as string,
@@ -110,6 +109,7 @@ function Payment() {
           duration: 2000,
           isClosable: false,
         });
+        setLoading(false);
       } else {
         toast({
           title: "Payment failed",
@@ -117,9 +117,8 @@ function Payment() {
           duration: 2000,
           isClosable: false,
         });
+        setLoading(false);
       }
-    } else {
-      alert("Please check your form");
     }
   };
 
@@ -284,17 +283,25 @@ function Payment() {
                   correct
                 </span>
               </Checkbox>
-              <button
-                className={
-                  allFormsValid()
-                    ? `action-button w-full`
-                    : `disabled-action-button w-full`
-                }
-                disabled={!allFormsValid()}
-                onClick={handleClick}
-              >
-                Confirm Payment
-              </button>
+              {loading ? (
+                <div className="w-full">
+                  <Center>
+                    <Spinner color="blue.500" />
+                  </Center>
+                </div>
+              ) : (
+                <button
+                  className={
+                    allFormsValid()
+                      ? `action-button w-full`
+                      : `disabled-action-button w-full`
+                  }
+                  disabled={!allFormsValid()}
+                  onClick={handleClick}
+                >
+                  Confirm Payment
+                </button>
+              )}
             </div>
           </section>
         </div>

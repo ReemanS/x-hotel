@@ -16,6 +16,7 @@ import {
   limitToFirst,
 } from "firebase/database";
 import { Room, FormValues, Transaction, OccupancyData } from "./schema";
+import axios from "axios";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -30,6 +31,8 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
+
+const url = process.env.NEXT_PUBLIC_FIREBASE_DATABASE_URL;
 
 // CRUD functions
 // Create
@@ -68,11 +71,6 @@ let emptyRoom: Room = {
     endDate: "",
   },
 };
-
-// generate random id string
-export function generateId(): string {
-  return Math.random().toString(36).slice(2, 9);
-}
 
 // Create room
 export async function createRoom(data: Room) {
@@ -175,7 +173,7 @@ export async function editRoomOccupancyDetails(
     snapshot.forEach((childSnapshot) => {
       const data: Room = childSnapshot.val();
       if (data.roomName === occupancyData.roomName) {
-        generatedId = generateId();
+        generatedId = crypto.randomUUID();
         set(ref(db, `Rooms/${childSnapshot.key}/occupancyDetails/`), {
           isOccupied: true,
           transId: generatedId,
@@ -206,3 +204,13 @@ export async function addToTransactions(
 
 // it is at this point that we discovered that realtime database has a REST API
 // :/
+
+export async function addToTransactionsHttps(transaction: Transaction) {
+  // add using axios
+  try {
+    const response = await axios.post(`${url}/Transactions.json`, transaction);
+    console.log(response);
+  } catch (error) {
+    console.log(error);
+  }
+}
