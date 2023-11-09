@@ -76,7 +76,7 @@ export interface Transaction {
   transDate: Date | string;
   guestCount: number;
   roomDetails: {
-    roomId: string;
+    roomNumber: number;
     startDate: Date | string;
     endDate: Date | string;
   };

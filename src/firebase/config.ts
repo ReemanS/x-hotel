@@ -190,3 +190,19 @@ export async function editRoomOccupancyDetails(
     return "";
   }
 }
+
+export async function addToTransactions(
+  transaction: Transaction
+): Promise<string> {
+  try {
+    const dbRef = ref(db, "Transactions/");
+    await push(dbRef, transaction);
+    return transaction.transId;
+  } catch (error) {
+    console.log(error);
+    return "";
+  }
+}
+
+// it is at this point that we discovered that realtime database has a REST API
+// :/

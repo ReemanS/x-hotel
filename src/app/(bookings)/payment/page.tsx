@@ -18,8 +18,8 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import "react-datepicker/dist/react-datepicker.css";
-import { OccupancyData } from "@/firebase/schema";
-import { editRoomOccupancyDetails } from "@/firebase/config";
+import { OccupancyData, Transaction } from "@/firebase/schema";
+import { editRoomOccupancyDetails, addToTransactions } from "@/firebase/config";
 
 // {searchParams.get("roomName")}
 
@@ -88,7 +88,20 @@ function Payment() {
         customerPhoneNumber: contactNumber,
       };
 
-      const success = await editRoomOccupancyDetails(occupancyData);
+      const transId = await editRoomOccupancyDetails(occupancyData);
+      const success = await addToTransactions({
+        transId: transId,
+        transAmount: occupancyData.balance,
+        transDate: new Date().toISOString(),
+        guestCount: occupancyData.guestCount,
+        roomDetails: {
+          roomNumber: occupancyData.roomNumber,
+          startDate: occupancyData.checkInDate,
+          endDate: occupancyData.checkOutDate,
+        },
+        customerName: occupancyData.customerName,
+        customerPhoneNumber: occupancyData.customerPhoneNumber,
+      });
 
       if (success != "") {
         toast({
