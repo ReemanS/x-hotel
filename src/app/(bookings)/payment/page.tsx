@@ -111,7 +111,7 @@ function Payment() {
           duration: 2000,
           isClosable: false,
         });
-        router.push("/confirmation");
+        router.push("/confirmation?transId=" + success);
       } else {
         toast({
           title: "Payment failed",

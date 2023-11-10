@@ -206,11 +206,16 @@ export async function addToTransactions(
 // it is at this point that we discovered that realtime database has a REST API
 // :/
 
-export async function addToTransactionsHttps(transaction: Transaction) {
-  // add using axios
+// get transactions by transaction id using REST API and axios
+export async function getTransactionById(
+  id: string
+): Promise<Transaction | undefined> {
   try {
-    const response = await axios.post(`${url}/Transactions.json`, transaction);
-    console.log(response);
+    const response = await axios.get(
+      `${url}/Transactions.json?orderBy="transId"&equalTo="${id}"`
+    );
+    const data = Object.values(response.data)[0];
+    return data as Transaction;
   } catch (error) {
     console.log(error);
   }

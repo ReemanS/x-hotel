@@ -1,13 +1,15 @@
+"use client";
 import React from "react";
 import ProgressSteps from "../booking/ProgressSteps";
+import Receipt from "../Receipt";
+import { useSearchParams } from "next/navigation";
 
 function Confirmation() {
+  const searchParams = useSearchParams();
   return (
     <>
       <ProgressSteps activeStep={2} />
-      <div className="bg-yellow-50 w-2/3">
-        <div>Your official receipt</div>
-      </div>
+      <Receipt id={searchParams.get("transId") as string} />
     </>
   );
 }
