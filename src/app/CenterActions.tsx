@@ -40,7 +40,7 @@ function CenterActions({ font, route }: { font: string; route: string }) {
         <div className="flex pt-1 text-background">
           <span>or&#160;</span>
           <Link
-            href={"/"}
+            href={"/verify"}
             className="flex hover:underline active:text-accent duration-150 items-center text-sm md:text-base drop-shadow-md"
           >
             <span className="pe-1">verify your previous transaction</span>

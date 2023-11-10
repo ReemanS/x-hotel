@@ -163,7 +163,7 @@ function Receipt({ id }: { id: string }) {
           </Center>
         </div>
       ) : (
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center mb-8">
           <div className="mt-4 text-2xl">Transaction not found</div>
           <Link
             href={"/"}
