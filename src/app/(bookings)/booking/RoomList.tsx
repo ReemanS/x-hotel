@@ -27,7 +27,11 @@ function RoomList({ formValues }: { formValues: FormValues }) {
     async function fetchRooms() {
       const roomsArray = await getAllRoomsArray();
       setAllRooms(roomsArray as Room[]);
-      setRooms(roomsArray as Room[]);
+      setRooms(
+        (roomsArray as Room[]).filter(
+          (room) => !room.occupancyDetails.isOccupied
+        )
+      );
     }
     fetchRooms();
   }, []);
@@ -42,7 +46,6 @@ function RoomList({ formValues }: { formValues: FormValues }) {
     let tempRooms: Room[] = [];
     allRooms.map((room) => {
       if (
-        !room.occupancyDetails.isOccupied &&
         !isDateBetween(
           formValues.checkInDate,
           room.occupancyDetails.startDate,
@@ -54,35 +57,6 @@ function RoomList({ formValues }: { formValues: FormValues }) {
         hasDesiredFeatures(formValues, room.roomFeatures)
       ) {
         tempRooms.push(room);
-      } else {
-        console.log(
-          `[RoomList.tsx (formValues search)]: ${room.roomName} not added because:`
-        );
-        console.log(
-          `[RoomList.tsx (formValues search)]: isDateBetween: ${!isDateBetween(
-            formValues.checkInDate,
-            room.occupancyDetails.startDate,
-            room.occupancyDetails.endDate
-          )}`
-        );
-        console.log(
-          `[RoomList.tsx (formValues search)]: isWithinCapacity: ${isWithinCapacity(
-            formValues.guestCount,
-            room.roomCapacity
-          )}`
-        );
-        console.log(
-          `[RoomList.tsx (formValues search)]: classification: ${
-            formValues.classification === "" ||
-            formValues.classification === room.roomClassification
-          }`
-        );
-        console.log(
-          `[RoomList.tsx (formValues search)]: hasDesiredFeatures: ${hasDesiredFeatures(
-            formValues,
-            room.roomFeatures
-          )}`
-        );
       }
     });
     setRooms(tempRooms);
@@ -95,17 +69,12 @@ function RoomList({ formValues }: { formValues: FormValues }) {
     endDate: Date | string
   ) => {
     if (startDate === "" || endDate === "") {
-      console.log(
-        `[RoomList.tsx]: output of isDateBetween function: false because startDate or endDate is empty`
-      );
       return false;
     }
-    console.log(
-      `[RoomList.tsx]: output of isDateBetween function: ${
-        date >= startDate && date <= endDate
-      }`
+    return (
+      new Date(date) >= new Date(startDate) &&
+      new Date(date) <= new Date(endDate)
     );
-    return date >= startDate && date <= endDate;
   };
 
   const isWithinCapacity = (guestCount: number, roomCapacity: number) => {

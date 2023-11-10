@@ -108,17 +108,18 @@ export function getAllRoomsArray(): Promise<{ [x: string]: any }[]> {
       (snapshot) => {
         let data: { [x: string]: any }[] = [];
         snapshot.forEach((childSnapshot) => {
-          if (childSnapshot.val().occupancyDetails.isOccupied === false) {
-            data.push(childSnapshot.val());
-            console.log("[schema.ts] childSnapshop.val():");
-            console.log(childSnapshot.val());
-          }
+          data.push(childSnapshot.val());
+          console.log("[schema.ts] childSnapshop.val():");
+          console.log(childSnapshot.val());
         });
         console.log(data);
         resolve(data);
       },
       (error) => {
         reject(error);
+      },
+      {
+        onlyOnce: true,
       }
     );
   });

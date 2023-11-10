@@ -240,14 +240,20 @@ function RoomModal({
               <span className="font-bold mr-1">Total balance:</span>
               <span>₱ {balance.toFixed(2)}</span>
             </div>
+            {/* <div>{new Date(formValues.checkInDate).toISOString()}</div>
+            <div>
+              {new Date(
+                new Date(formValues.checkInDate).toISOString()
+              ).toString()}
+            </div> */}
             <Link
               href={{
                 pathname: "/payment",
                 query: {
                   roomNumber: room.roomNumber,
                   roomName: room.roomName,
-                  checkInDate: formValues.checkInDate.toLocaleString(),
-                  checkOutDate: formValues.checkOutDate.toLocaleString(),
+                  checkInDate: new Date(formValues.checkInDate).toISOString(),
+                  checkOutDate: new Date(formValues.checkOutDate).toISOString(),
                   guestCount: formValues.guestCount,
                   balance: balance,
                 },
