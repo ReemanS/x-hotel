@@ -106,17 +106,17 @@ function Payment() {
 
       if (success != "") {
         toast({
-          title: `Payment successful: ${success}`,
+          title: `Payment successful!`,
           status: "success",
-          duration: 2000,
-          isClosable: false,
+          duration: 3000,
+          isClosable: true,
         });
         router.push("/confirmation?transId=" + success);
       } else {
         toast({
           title: "Payment failed",
           status: "error",
-          duration: 2000,
+          duration: 3000,
           isClosable: false,
         });
         setLoading(false);

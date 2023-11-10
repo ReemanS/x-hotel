@@ -203,10 +203,12 @@ export async function addToTransactions(
   }
 }
 
+// November 9, 2023
 // it is at this point that we discovered that realtime database has a REST API
+// This could have been much simpler
 // :/
 
-// get transactions by transaction id using REST API and axios
+// get transactions by transaction id
 export async function getTransactionById(
   id: string
 ): Promise<Transaction | undefined> {
@@ -216,6 +218,19 @@ export async function getTransactionById(
     );
     const data = Object.values(response.data)[0];
     return data as Transaction;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+// get room by id
+export async function getRoomById(id: number): Promise<Room | undefined> {
+  try {
+    const response = await axios.get(
+      `${url}/Rooms.json?orderBy="roomNumber"&equalTo=${id}`
+    );
+    const data = Object.values(response.data)[0];
+    return data as Room;
   } catch (error) {
     console.log(error);
   }

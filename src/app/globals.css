@@ -17,3 +17,7 @@ h1 {
 .disabled-action-button {
   @apply bg-gray-400 text-background p-4 px-6 rounded-lg;
 }
+
+.small-action-button {
+  @apply bg-primary hover:bg-[#3182CE] active:bg-accent active:scale-95 duration-150 text-background p-2 rounded-md;
+}
