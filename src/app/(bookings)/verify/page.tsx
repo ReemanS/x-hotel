@@ -1,6 +1,5 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import Receipt from "../Receipt";
 import {
   Center,
   FormControl,
@@ -10,6 +9,7 @@ import {
 } from "@chakra-ui/react";
 import { QrScanner } from "@yudiel/react-qr-scanner";
 import { AiOutlineSearch } from "react-icons/ai";
+import TransactionDetails from "./TransactionDetails";
 
 function Verify() {
   const [idCode, setIdCode] = useState("Not Found");
@@ -18,7 +18,7 @@ function Verify() {
   return (
     <>
       {idCode !== "Not Found" ? (
-        <Receipt id={idCode} />
+        <TransactionDetails id={idCode} />
       ) : (
         <div className="mt-8 font-poppins">
           <Center>

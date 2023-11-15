@@ -2,6 +2,7 @@ import { AbsoluteCenter, Center } from "@chakra-ui/react";
 import React from "react";
 import Link from "next/link";
 
+// TODO: Fix broken navbar
 function VerifyNavbar() {
   return (
     <nav className="bg-background relative min-w-full py-6 px-8 z-[1]">
