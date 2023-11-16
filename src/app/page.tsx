@@ -18,13 +18,6 @@ export default function Home() {
         <HomeNavbar />
         <Carousel images={images} />
         <CenterActions font={merriweather.className} route="/booking" />
-
-        <div className="font-normal font-merriweather">
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloribus
-          alias, veritatis quibusdam modi, consequatur fuga illum officia
-          pariatur eum doloremque at delectus quas? Ab error dignissimos
-          assumenda accusamus? Ad, velit!
-        </div>
       </div>
     </main>
   );

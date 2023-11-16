@@ -10,8 +10,6 @@ function HomeNavbar() {
           width={80}
           className="bg-background/25 p-2 rounded-lg"
         />
-
-        <div>Actions</div>
       </div>
     </nav>
   );
