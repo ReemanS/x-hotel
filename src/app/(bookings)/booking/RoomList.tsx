@@ -19,7 +19,7 @@ import RoomModal from "./RoomModal";
 function RoomList({ formValues }: { formValues: FormValues }) {
   const [allRooms, setAllRooms] = useState<Room[]>([]);
   const [rooms, setRooms] = useState<Room[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [openRoomIndex, setOpenRoomIndex] = useState(-1);
 
   // Effect for fetching all rooms
@@ -32,14 +32,10 @@ function RoomList({ formValues }: { formValues: FormValues }) {
           (room) => !room.occupancyDetails.isOccupied
         )
       );
+      setIsLoading(false);
     }
     fetchRooms();
   }, []);
-
-  // Effect for managing loading state
-  useEffect(() => {
-    setIsLoading((prev) => !prev);
-  }, [allRooms]);
 
   // Effect for fetching rooms by criteria from formValues
   useEffect(() => {
@@ -123,7 +119,7 @@ function RoomList({ formValues }: { formValues: FormValues }) {
         <div className="font-bold text-2xl mb-2">Available Rooms</div>
       </div>
 
-      {isLoading ? (
+      {!isLoading ? (
         rooms.length > 0 ? (
           rooms.map((room, idx) => {
             return (
